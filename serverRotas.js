@@ -12,6 +12,9 @@ const servidor = http.createServer(function(req, res){
             <body>
             <h1> Hello World! </h1>
             <p> Bem vindo ao meu simples servidor e página</p>
+            <p> Aproveite que está aqui e se cadastre:</p>
+            <br>
+            <button type="button"><a href="https://localhost:3001/cadastro">Cadastrar</a></button>
             </body>
         </html>
         `
