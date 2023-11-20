@@ -74,96 +74,127 @@
 
 <body>
 
-    <main>
-        <div class="cadastro">
-            <form class="formulario" action="">
-                <fieldset>
-                    <legend>Cadastro de Aluno</legend>
 
-                    <label for="name">Nome</label>
-                    <input class="formulario" value="" name="nmName" id="idName" type="text" required>
+    <div class="cadastro">
+        <form class="formulario" action="">
+            <fieldset>
+                <legend>Cadastro de Aluno</legend>
 
-                    <label for="lastName">Sobrenome</label>
-                    <input class="formulario" value="" name="nmLastName" id="idLastName" type="text" required>
+                <label for="name">Nome</label>
+                <input class="formulario" value="" name="nmName" id="idName" type="text" required>
 
-                    <label for="dataNascimento">Data de Nascimento </label>
+                <label for="lastName">Sobrenome</label>
+                <input class="formulario" value="" name="nmLastName" id="idLastName" type="text" required>
 
-                    <input type="date" id="idDataNasc" name="nmDataNasc" min="2000-01-01" max="2017-12-31" required>
+                <label for="dataNascimento">Data de Nascimento </label>
+                <input type="date" id="idDataNasc" name="nmDataNasc" min="1950-01-01" max="2020-12-31" required>
+                <br>
+                <label for="adress">Endereço</label>
+                <input class="formulario" value="" type="text" name="nmAdress" id="idAdress">
+
+                <label for="momName">Nome da Mãe</label>
+                <input class="formulario" value="" name="nmMother" id="idMother" type="text">
+
+                <label for="dadName">Nome do Pai</label>
+                <input class="formulario" value="" name="nmFather" id="idFather" type="text">
+
+                <label for="e-mail">E-mail</label>
+                <input class="formulario" value="" name="nmEmail" id="idEmail" type="email" required>
+
+                <label for="tel">Tel. </label>
+                <input class="formulario" value="" type="tel" name="nmTel" id="idTel">
+
+                <label for="serie">Série </label>
+                <input class="formulario" value="" type="number" name="nmSerie" id="idSerie" min="1" max="9" step="1" inputmode="numeric">
+
+                <label for="sexo">Sexo</label>
+                <br>
+                <input type="radio" name="nmGenero" id="idFem" checked>
+                <label for="idFem">Feminino</label>
+                <br>
+                <input type="radio" name="nmGenero" id="idMasc">
+                <label for="idFmasc">Masculino</label>
+                <br>
+                <br>
+                <label for="necessidades">Necessidades Especiais</label>
+                <br>
+                <br>
+                <input type="checkbox" id="necessidade1" class="necessidadesEsp" name="nmNecessidade1" value="necessidade1">
+                <label for="necessidade1"> Deficiência Auditiva</label>
+                <br>
+                <input type="checkbox" id="necessidade2" class="necessidadesEsp" name="nmNecessidade2" value="necessidade1">
+                <label for="necessidade2"> Deficiência Motora</label>
+                <br>
+                <input type="checkbox" id="necessidade3" class="necessidadesEsp" name="nmNecessidade3" value="necessidade3">
+                <label for="necessidade3"> Deficiência Visual</label>
+                <br>
+                <input type="checkbox" id="necessidade4" class="necessidadesEsp" name="nmNecessidade4" value="necessidade4">
+                <label for="necessidade4"> Paralisia Cerebral</label>  
+                <br>
+                <input type="checkbox" id="necessidade5" class="necessidadesEsp" name="nmNecessidade5" value="necessidade5">
+                <label for="necessidade5"> Pertubação de Espectro Autista</label>  
+                <br>
+                <input type="checkbox" id="necessidade6" class="necessidadesEsp" name="nmNecessidade6" value="necessidade6">
+                <label for="necessidade6"> Pertubação de Foro Psicológico</label>  
+                <br>
+                <input type="checkbox" id="necessidade7" class="necessidadesEsp" name="nmNecessidade7" value="necessidade7">
+                <label for="necessidade7"> Pertubação de Aprendizagem</label>  
+                <br>
+                <input type="checkbox" id="necessidade8" class="necessidadesEsp" name="nmNecessidade8" value="necessidade8">
+                <label for="necessidade8"> Altas Habilidades</label>                   
+
+                <br>
+                <br>
+                <label for="message"></label>
+                <textarea class="formulario" value="" name="nmMessage" id="idMessage" cols="30" rows="10" placeholder="Digite sua mensagem para nós!" required></textarea>
+                <br>
+                <br>
+                <div class="btn-container">
+                    <input type="button" value="enviarGet" onclick="requisicaoGet()">
+                    <input type="button" value="enviarPost" onclick="requisicaoPost()"> 
+                </div>   
+            </fieldset>  
+        </form>
+    </div>
+
+    <script>
+        async function requisicaoGet() {
+            let name = document.getElementById('idName').value;
+            let lastName = document.getElementById('idLastName').value;
+            let dataNascimento = document.getElementById('idDataNasc').value;
+            let endereco = document.getElementById('idAdress').value;
+            let email = document.getElementById('idEmail').value;
+            let telefone = document.getElementById('idTel').value;
+
+            let resposta = await fetch(`http://localhost:3001/usuario?nmName=${name}&nmLastName=${lastName}&nmDataNasc=${dataNascimento}&nmEndereco=${endereco}&nmEmail=${email}&nmTel=${telefone}`)
+            console.log(await resposta.json()) 
+}
 
 
-                    <label for="adress">Endereço</label>
-                    <input class="formulario" value="" type="text" name="nmAdress" id="idAdress">
+        async function requisicaoPost() {
+            let name = document.getElementById('idName').value;
+            let lastName = document.getElementById('idLastName').value;
+            let dataNascimento = document.getElementById('idDataNasc').value;
+            let endereco = document.getElementById('idAdress').value;
+            let email = document.getElementById('idEmail').value;
+            let telefone = document.getElementById('idTel').value;
 
-                    <label for="momName">Nome da Mãe</label>
-                    <input class="formulario" value="" name="nmMother" id="idMother" type="text">
-
-                    <label for="dadName">Nome do Pai</label>
-                    <input class="formulario" value="" name="nmFather" id="idFather" type="text">
-
-                    <label for="e-mail">E-mail</label>
-                    <input class="formulario" value="" name="nmEmail" id="idEmail" type="email" required>
-
-                    <label for="tel">Tel. </label>
-                    <input class="formulario" value="" type="tel" name="nmTel" id="idTel">
-
-                    <label for="serie">Série </label>
-                    <input class="formulario" value="" type="number" name="nmSerie" id="idSerie" min="1" max="9" step="1" inputmode="numeric">
-
-                    <label for="sexo">Sexo</label>
-
-                    <br>
-
-                    <input type="radio" name="nmGenero" id="idFem" checked>
-                    <label for="idFem">Feminino</label>
-
-                    <br>
-
-                    <input type="radio" name="nmGenero" id="idMasc">
-                    <label for="idFmasc">Masculino</label>
-
-                    <br>
-                    <br>
-                    <label for="necessidades">Necessidades Especiais</label>
-                    <br>
-                    <br>
-                    <input type="checkbox" id="necessidade1" class="necessidadesEsp" name="nmNecessidade1" value="necessidade1">
-                    <label for="necessidade1"> Deficiência Auditiva</label>
-                    <br>
-                    <input type="checkbox" id="necessidade2" class="necessidadesEsp" name="nmNecessidade2" value="necessidade1">
-                    <label for="necessidade2"> Deficiência Motora</label>
-                    <br>
-                    <input type="checkbox" id="necessidade3" class="necessidadesEsp" name="nmNecessidade3" value="necessidade3">
-                    <label for="necessidade3"> Deficiência Visual</label>
-                    <br>
-                    <input type="checkbox" id="necessidade4" class="necessidadesEsp" name="nmNecessidade4" value="necessidade4">
-                    <label for="necessidade4"> Paralisia Cerebral</label>  
-                    <br>
-                    <input type="checkbox" id="necessidade5" class="necessidadesEsp" name="nmNecessidade5" value="necessidade5">
-                    <label for="necessidade5"> Pertubação de Espectro Autista</label>  
-                    <br>
-                    <input type="checkbox" id="necessidade6" class="necessidadesEsp" name="nmNecessidade6" value="necessidade6">
-                    <label for="necessidade6"> Pertubação de Foro Psicológico</label>  
-                    <br>
-                    <input type="checkbox" id="necessidade7" class="necessidadesEsp" name="nmNecessidade7" value="necessidade7">
-                    <label for="necessidade7"> Pertubação de Aprendizagem</label>  
-                    <br>
-                    <input type="checkbox" id="necessidade8" class="necessidadesEsp" name="nmNecessidade8" value="necessidade8">
-                    <label for="necessidade8"> Altas Habilidades</label>                   
-
-                    <br>
-                    <br>
-                    <label for="message"></label>
-                    <textarea class="formulario" value="" name="nmMessage" id="idMessage" cols="30" rows="10" placeholder="Digite sua mensagem para nós!" required></textarea>
-                    <br>
-                    <br>
-                    <div class="btn-container">
-                        <button type="submit">Salvar</button>  
-                        <button type="reset">Limpar Tela</button>   
-                    </div>   
-                </fieldset>  
-            </form>
-        </div>
-    </main>
+            let option = {
+                method: "POST",
+                body: JSON.stringify({
+                    nmName: name,
+                    nmLastName: lastName,
+                    nmDataNasc: dataNascimento,
+                    nmEndereco: endereco,
+                    nmEmail: email,
+                    nmTel: telefone
+                }),
+                headers: {"Content-Type": "application/json"}
+            }
+            let resposta = await fetch("http://localhost:3001/usuario", option);
+            console.log(await resposta.json());
+        }
+    </script>
     
 </body>
 </html>
