@@ -1,0 +1,61 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    max-width: 800px[];
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+}
+
+.cadastro {
+    margin: 32px;
+}
+
+label, legend {
+    margin: 16px;
+}
+
+.formulario {
+    display: flex;
+    flex-direction: column;
+    margin: 8px 16px; 
+    width: 400px; 
+}
+
+#dataNascimento {
+    display: flex;
+    margin: 8px 16px;
+    padding: 8px;
+    width: 160px;
+    text-align: center;
+}
+
+#idFem, #idMasc {
+    margin: 8px 16px;
+}
+.necessidadesEsp {
+    margin-left: 16px;
+}
+
+fieldset {
+    padding: 10px;
+    margin: 0 auto;
+}
+
+textarea {
+    resize: none;
+}
+.btn-container button {
+    margin: 0px 8px 16px 16px; 
+    padding: 8px 16px; 
+}
+
+input {
+    padding:8px;
+}
