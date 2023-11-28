@@ -1,42 +1,72 @@
 const express = require('express'); //O módulo express retorna uma função que instancia o express
-const conversorJson = require("body-parser")
 const cors = require("cors")
+const fs = require("fs/promises")
+const path = require('path')
 
 const app = express(); //A função express cria uma instância de todo o framework express em app
+const porta = 3001;
 
-app.use(conversorJson.urlencoded({extended: false})) //middleware
-app.use(conversorJson.json());
+app.use(express.static(path.join(__dirname, "img")));
+app.use(express.static(path.join(__dirname, "frontend")));
+app.use(express.static(path.join(__dirname, "scripts")));
 
-app.use(function(req, resp, next){
-    resp.header("Access-Control-Allow-Origin", "*")
-    //resp.header("Access-Control-Allow-Origin", "http://localhost:8080")
+app.use(cors())
 
-    app.use(cors())
-    next()
-})
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '/frontend/index.html'));
+});
 
 //Rota Get com passagem de parametros 
-app.get("/usuario", function (req, resp) {
-    
-    let name = req.query.nmName
-    let lastName = req.query.nmLastName
-    let dataNascimento = req.query.nmDataNasc
-    let endereco = req.query.nmEndereco
-    let email = req.query.nmEmail
-    let telefone = req.query.nmTel
+app.get("/cargainicial", (req, resp) => {
+    async function getCandidates() {
+        console.log('Rota /cargainicial foi acessada');
+        try {
+            const content = await fs.readFile('backend/config.csv', 'utf-8');
+            const candidates = content.split('\r\n');
+            const candidate = [];
+            candidates.forEach(element => {
+                let candidatesData = element.split(',');
 
-    console.log("Chegou na rota usuario",  name, lastName, dataNascimento, endereco, email, telefone);
+                let candidatesObj = {
+                    tipoEleicao: candidatesData[0],
+                    numeroCandidato: candidatesData[1],
+                    nomeCandidato: candidatesData[2],
+                    urlFoto: candidatesData[3]
+                }
 
-    resp.json({
-        "nameUsu": name, 
-        "lastNameUsu:": lastName, 
-        "dataNascimentoUsu:": dataNascimento,
-        "enderecoUsu:": endereco,
-        "emailUsu:": email,
-        "telefoneUsu:": telefone
-        })
+                candidate.push(candidatesObj)
+            })
+            
+            console.log(candidate);
+            resp.send(candidate);
+            
+        } catch (error) {
+            console.error('Não foi possível ler o arquivo:', error);
+            resp.status(500).send('Erro ao registrar voto, contate o administrador do sistema');
+        }
+    }
+    getCandidates();
 })
 
+// Criando o servidor e listener
+app.listen(porta, function () {
+    console.log(`Servidor rodando na porta ${porta}`);
+})
+
+            /*
+            csv({ separator: ',' })() //Configura o csv-parser para usar a vírgula como o separador de campos no arquivo CSV
+            .on('data', (row) => candidatesArray.push(row)) // Quando uma linha é lida, adiciona o objeto correspondente ao array candidatesArray
+            .on('end', () => resp.json(candidatesArray)) // Quando todo o CSV é lido, envia os dados no formato JSON como resposta
+            .write(content); // Escreve o conteúdo do arquivo CSV no parser
+            */
+
+
+
+
+
+
+/*
 app.post("/usuario", function(req, resp){
 
     //console.log(req);
@@ -57,10 +87,5 @@ app.post("/usuario", function(req, resp){
         "telefoneUsu:": telefone
         })
 })
-
-// Criando o servidor
-const porta = 3001;
-app.listen(porta, function () {
-    console.log(`Servidor rodando na porta ${porta}`);
-})
+*/
 
