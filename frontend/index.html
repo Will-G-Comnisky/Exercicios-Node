@@ -31,10 +31,28 @@
                 <input type="text" name="nmCpf" id="idCpf" placeholder="CPF do votante">
 
                 <div class="btn-container">
-                    <input type="button" value="Confirmar" id="btnConfirma" class="btn btn-success">
-                    <input type="button" value="Cancelar" id="btnCancela" class="btn btn-danger"> 
-                    <input type="button" value="Branco" id="btnBranco" class="btn btn-light">
-                </div>   
+                    <input type="button" value="Confirmar" id="idBtnConfirma" class="btn btn-success">
+                    <input type="button" value="Cancelar" id="idBtnCancela" class="btn btn-danger"> 
+                    <input type="button" value="Branco" id="idBtnBranco" class="btn btn-light">
+                </div>
+                
+                <div class="modal" id="idModalSucesso" tabindex="-1" role="dialog">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar"> 
+                                    <span aria-hidden="true">&times;</span> <!-- "Botão" X no canto superior pra fechar -->
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Seu voto foi registrado com sucesso!</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary">Finalizar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </fieldset>  
         </form>
     </div>

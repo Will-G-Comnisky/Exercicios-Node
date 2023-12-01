@@ -1,4 +1,8 @@
 let candidates
+const btnConfirma = document.getElementById('idBtnConfirma');
+const btnCancela = document.getElementById('idBtnCancela');
+const btnBranco = document.getElementById('idBtnBranco');
+const disableElements = document.querySelectorAll('button, input')
 
 (function() {
     loadSelect()
@@ -54,6 +58,66 @@ async function loadSelect() {
             }
         
 });
+}
+
+function getDate() {
+    const date = new Date();
+    let day = date.getDate().toString().padStart(2, '0');
+    let month = (date.getMonth() + 1).toString().padStart(2, '0');
+    let year = date.getFullYear();
+
+    let hours = String(date.getHours()).padStart(2, '0')
+    let minutes = String(date.getMinutes()).padStart(2, '0')
+    let seconds = String(date.getSeconds()).padStart(2, '0')
+    let milliseconds = String(date.getMilliseconds()).padStart(3, '0')
+
+    let timeAndDate = `${day}-${month}-${year}-${hours}-${minutes}-${seconds}-${milliseconds}`;
+    return timeAndDate;
+}
+
+// Trecho que realiza o registro de voto
+btnConfirma.addEventListener('click', registrarVoto)
+
+async function registrarVoto() {
+
+    let dataHora = getDate();
+    let dadosVoto = {
+        method: 'POST',
+        body: JSON.stringify({
+            cpf: '',
+            numeroCandidato: numberCandidate.value,
+            timeStamp: dataHora
+        }), headers: { 'Content-Type': 'application/json' }
+    };
+
+    let response = await fetch ('http://localhost:3001/voto', dadosVoto);
+    let mensagem = await response.json();
+    console.log (mensagem);
+
+    let modalSucesso = document.getElementById('idModalSucesso');
+    let modalFalha = document.getElementById('idModalFalha');
+
+    if (mensagem.status === 200 && numberCandidate.value.trim() !== '') {
+        modalSucesso.style.display = 'flex';
+        setTimeout(() => fecharModal('idModalSucesso'), 2000)
+    } else {
+        console.error('Erro ao registrar seu voto. Tente contatar o administrador do sistema');
+        abrirModal('idModalFalha');
+        btnConfirma.setAttribute('disabled', '');
+        btnConfirma.classList.add('disabled');
+    }
+}
+
+function abrirModal(idModal) {
+    var modal = document.getElementById(idModal)
+    modal.style.display = "flex"
+}
+
+function fecharModal(idModal) {
+    var modal = document.getElementById(idModal)
+    modal.style.display = "none"
+    
+    disableElements.forEach(elemento => elemento.classList.remove('disabled'))
 }
 
 // Função para carregar a configuração inicial da urna

@@ -10,6 +10,11 @@ app.use(express.static(path.join(__dirname, "img")));
 app.use(express.static(path.join(__dirname, "frontend")));
 app.use(express.static(path.join(__dirname, "scripts")));
 
+// Middleware usado para trabalhar com a rota POST
+app.use(express.urlencoded({extended: false}));
+app.use(express.json()); // body parser-> captura o corpo da requisição, converte em JS Object e anexa a variavel na requisição (req.body)
+// Agora sim, após esse middleware conseguimos ler o (req.body) na nova rota /voto usando POST
+
 app.use(cors())
 
 
@@ -47,6 +52,29 @@ app.get("/cargainicial", (req, resp) => {
         }
     }
     getCandidates();
+})
+
+// NOVA ROTA VOTO
+app.post('/voto', async (req, res) => {
+
+    // Temos que capturar os dados vindos do frontend
+    let {cpf, numeroCandidato, timeStamp} = req.body;
+
+    let successMsg = {
+        "status": "200",
+        "msg": "Seu voto foi registrado com sucesso!"
+    }
+    let errorMsg = {
+        'status': "500",
+        "msg": "Erro ao registrar seu voto, contate o administrador do sistema"
+    }
+    // Salvar os dados capturados no arquivo votacao.csv (o arquivo será criado automaticamente ao salvar)
+    await fs.appendFile('backend/votacao.csv', `${cpf}, {}` + '\n');
+
+    res.json({
+        'Status': '200',
+        'mensagem': 'Seu voto foi registrado com sucesso!'
+    })
 })
 
 // Criando o servidor e listener
