@@ -2,7 +2,12 @@ let candidates
 const btnConfirma = document.getElementById('idBtnConfirma');
 const btnCancela = document.getElementById('idBtnCancela');
 const btnBranco = document.getElementById('idBtnBranco');
-const disableElements = document.querySelectorAll('button, input')
+const modalFinalizar1 = document.getElementById('idModalFinalizar1');
+const modalFinalizar2 = document.getElementById('idModalFinalizar2');
+const modalX1 = document.getElementById('idModalX1');
+const modalX2 = document.getElementById('idModalX2');
+
+
 
 (function() {
     loadSelect()
@@ -78,6 +83,7 @@ function getDate() {
 // Trecho que realiza o registro de voto
 btnConfirma.addEventListener('click', registrarVoto)
 
+
 async function registrarVoto() {
 
     let dataHora = getDate();
@@ -94,31 +100,50 @@ async function registrarVoto() {
     let mensagem = await response.json();
     console.log (mensagem);
 
-    let modalSucesso = document.getElementById('idModalSucesso');
-    let modalFalha = document.getElementById('idModalFalha');
+    if (mensagem.Status == 200 && numberCandidate.value.trim() != '') {
+        console.log ('status de mensagem foi 200, logo entrou no IF');
+        
+        abrirModal('idModalSucesso');
 
-    if (mensagem.status === 200 && numberCandidate.value.trim() !== '') {
-        modalSucesso.style.display = 'flex';
         setTimeout(() => fecharModal('idModalSucesso'), 2000)
+        
     } else {
+        
         console.error('Erro ao registrar seu voto. Tente contatar o administrador do sistema');
-        abrirModal('idModalFalha');
-        btnConfirma.setAttribute('disabled', '');
-        btnConfirma.classList.add('disabled');
+        abrirModal('idModalFalha');      
     }
 }
-
 function abrirModal(idModal) {
-    var modal = document.getElementById(idModal)
-    modal.style.display = "flex"
+    const modal = new bootstrap.Modal(document.getElementById(idModal));
+    modal.show();
 }
+
 
 function fecharModal(idModal) {
-    var modal = document.getElementById(idModal)
-    modal.style.display = "none"
-    
-    disableElements.forEach(elemento => elemento.classList.remove('disabled'))
+    const modal = new bootstrap.Modal(document.getElementById(idModal));
+    modal.hide();
 }
+
+// Evento de clique no botão "Finalizar" do Modal 1
+document.getElementById('idModalFinalizar1').addEventListener('click', function() {
+    fecharModal('idModalSucesso');
+});
+
+// Evento de clique no botão "Finalizar" do Modal 2
+document.getElementById('idModalFinalizar2').addEventListener('click', function() {
+    fecharModal('idModalFalha');
+});
+
+// Evento de clique no botão X do Modal 1
+document.getElementById('idModalX1').addEventListener('click', function() {
+    fecharModal('idModalSucesso');
+});
+
+// Evento de clique no botão X do Modal 2
+document.getElementById('idModalX2').addEventListener('click', function() {
+    fecharModal('idModalFalha');
+});
+
 
 // Função para carregar a configuração inicial da urna
 async function loadUrna() {
