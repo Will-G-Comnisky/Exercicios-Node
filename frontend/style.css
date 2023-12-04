@@ -5,7 +5,7 @@
 }
 
 body {
-    max-width: 800px[];
+    max-width: 960px[];
     display: flex;
     justify-content: center;
     align-items: center;
@@ -14,18 +14,14 @@ body {
 }
 
 .cadastro {
-    margin: 32px;
+    margin: 0 auto;
 }
 
-label, legend {
-    margin: 16px;
-}
 
 .formulario {
     display: flex;
     flex-direction: column;
-    margin: 8px 16px; 
-    width: 400px; 
+    margin: 8px 24px; 
 }
 
 fieldset {
@@ -33,9 +29,7 @@ fieldset {
     margin: 0 auto;
 }
 
-textarea {
-    resize: none;
-}
+
 .btn-container button {
     margin: 0px 8px 16px 16px; 
     padding: 8px 16px; 
@@ -46,9 +40,9 @@ input {
 }
 
 #idCandidateImg {
-    max-width: 360px;
-    width: 200px;
-    height: 220px;
+    max-width: 380px;
+    width: 220px;
+    height: 240px;
     border: 2px solid black;
     border-radius: 16px;
 }

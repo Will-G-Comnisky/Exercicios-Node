@@ -2,12 +2,6 @@ let candidates
 const btnConfirma = document.getElementById('idBtnConfirma');
 const btnCancela = document.getElementById('idBtnCancela');
 const btnBranco = document.getElementById('idBtnBranco');
-const modalFinalizar1 = document.getElementById('idModalFinalizar1');
-const modalFinalizar2 = document.getElementById('idModalFinalizar2');
-const modalX1 = document.getElementById('idModalX1');
-const modalX2 = document.getElementById('idModalX2');
-
-
 
 (function() {
     loadSelect()
@@ -35,7 +29,12 @@ function displayCandidate() {
     }
 };
 
-numberCandidate.addEventListener('input', displayCandidate);
+numberCandidate.addEventListener('input', function () {
+    let inputedCandidate = numberCandidate.value;
+    select.value = inputedCandidate
+    displayCandidate();
+});
+
 
 select.addEventListener('change', function () {
     let selectedCandidate = select.value
@@ -80,9 +79,27 @@ function getDate() {
     return timeAndDate;
 }
 
+function abrirModal(idModal) {
+    var modal = document.getElementById(idModal)
+    modal.style.display = "flex"
+
+}
+
+function fecharModal(idModal) {
+    var modal = document.getElementById(idModal)
+    modal.style.display = "none"
+}
+
+btnCancela.addEventListener('click', function() {
+    document.getElementById('idCandidateName').innerText = '';
+    document.getElementById('idCandidateImg').src = '';
+    document.getElementById('idCandidateImg').alt = '';
+    select.value = '';
+    numberCandidate.value = '';
+})
+
 // Trecho que realiza o registro de voto
 btnConfirma.addEventListener('click', registrarVoto)
-
 
 async function registrarVoto() {
 
@@ -102,47 +119,50 @@ async function registrarVoto() {
 
     if (mensagem.Status == 200 && numberCandidate.value.trim() != '') {
         console.log ('status de mensagem foi 200, logo entrou no IF');
-        
-        abrirModal('idModalSucesso');
+        abrirModal('idModalSucesso')
 
-        setTimeout(() => fecharModal('idModalSucesso'), 2000)
-        
+        // Fecha o modal após 2000 milissegundos
+        setTimeout(() => fecharModal('idModalSucesso'), 3000);      
     } else {
-        
         console.error('Erro ao registrar seu voto. Tente contatar o administrador do sistema');
-        abrirModal('idModalFalha');      
+        abrirModal('idModalFalha');
+
     }
 }
-function abrirModal(idModal) {
-    const modal = new bootstrap.Modal(document.getElementById(idModal));
-    modal.show();
+
+// Trecho que realiza o registro do voto EM BRANCO
+btnBranco.addEventListener('click', registrarVoto)
+
+async function registrarVoto() {
+
+    let dataHora = getDate();
+    let dadosVoto = {
+        method: 'POST',
+        body: JSON.stringify({
+            cpf: '',
+            numeroCandidato: 'BRANCO',
+            timeStamp: dataHora
+        }), headers: { 'Content-Type': 'application/json' }
+    };
+
+    let response = await fetch ('http://localhost:3001/voto', dadosVoto);
+    let mensagem = await response.json();
+    console.log (mensagem);
+
+    if (mensagem.Status == 200) {
+        console.log ('status de mensagem foi 200, logo entrou no IF');
+        abrirModal('idModalSucesso')
+
+        // Fecha o modal após 2000 milissegundos
+        setTimeout(() => fecharModal('idModalSucesso'), 3000);      
+    } else {
+        console.error('Erro ao registrar seu voto. Tente contatar o administrador do sistema');
+        abrirModal('idModalFalha');
+
+    }
 }
 
 
-function fecharModal(idModal) {
-    const modal = new bootstrap.Modal(document.getElementById(idModal));
-    modal.hide();
-}
-
-// Evento de clique no botão "Finalizar" do Modal 1
-document.getElementById('idModalFinalizar1').addEventListener('click', function() {
-    fecharModal('idModalSucesso');
-});
-
-// Evento de clique no botão "Finalizar" do Modal 2
-document.getElementById('idModalFinalizar2').addEventListener('click', function() {
-    fecharModal('idModalFalha');
-});
-
-// Evento de clique no botão X do Modal 1
-document.getElementById('idModalX1').addEventListener('click', function() {
-    fecharModal('idModalSucesso');
-});
-
-// Evento de clique no botão X do Modal 2
-document.getElementById('idModalX2').addEventListener('click', function() {
-    fecharModal('idModalFalha');
-});
 
 
 // Função para carregar a configuração inicial da urna
