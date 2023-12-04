@@ -79,16 +79,44 @@ function getDate() {
     return timeAndDate;
 }
 
+// TRECHO QUE CONFIGURA AS MODAIS EM BS
+
 function abrirModal(idModal) {
+    // Desabilita todos os botões e inputs
+    desabilitarElementos();
+    // Evento para habilitar os elementos quando a modal for fechada
     var modal = document.getElementById(idModal)
     modal.style.display = "flex"
-
+    setTimeout(() => habilitarElementos, 2100); 
 }
-
 function fecharModal(idModal) {
     var modal = document.getElementById(idModal)
     modal.style.display = "none"
+    habilitarElementos();
 }
+
+// TRECHO QUE HABILITA E DESABILITA BOTÕES E CAMPOS ENQUANTO MODAL ESTÁ ATIVA OU NÃO
+
+function desabilitarElementos() {
+    const elementosParaDesabilitar = document.getElementsByClassName('disabledOrEnabled');
+    // Convertendo a coleção HTML em um array
+    const arrayElementos = Array.from(elementosParaDesabilitar);
+    // Itera sobre os elementos e desabilita cada um deles
+    arrayElementos.forEach(elemento => {
+        elemento.disabled = true;
+    });
+}
+function habilitarElementos() {
+    const elementosParaHabilitar = document.getElementsByClassName('disabledOrEnabled');
+    // Convertendo a coleção HTML em um array
+    const arrayElementos = Array.from(elementosParaHabilitar);
+    // Itera sobre os elementos e habilita cada um deles
+    arrayElementos.forEach(elemento => {
+        elemento.disabled = false;
+    });
+}
+
+// TRECHO QUE CANCELA INFORMAÇÕES DE VOTO (BOTÃO CANCELA)
 
 btnCancela.addEventListener('click', function() {
     document.getElementById('idCandidateName').innerText = '';
@@ -98,7 +126,8 @@ btnCancela.addEventListener('click', function() {
     numberCandidate.value = '';
 })
 
-// Trecho que realiza o registro de voto
+// TRECHO QUE REALIZA O REGISTRO DE VOTO (BOTÃO CONFIRMA)
+
 btnConfirma.addEventListener('click', registrarVoto)
 
 async function registrarVoto() {
@@ -117,12 +146,12 @@ async function registrarVoto() {
     let mensagem = await response.json();
     console.log (mensagem);
 
-    if (mensagem.Status == 200 && numberCandidate.value.trim() != '') {
+    if (mensagem.status == 200 && numberCandidate.value.trim() != '') {
         console.log ('status de mensagem foi 200, logo entrou no IF');
         abrirModal('idModalSucesso')
 
         // Fecha o modal após 2000 milissegundos
-        setTimeout(() => fecharModal('idModalSucesso'), 3000);      
+        setTimeout(() => fecharModal('idModalSucesso'), 2100);      
     } else {
         console.error('Erro ao registrar seu voto. Tente contatar o administrador do sistema');
         abrirModal('idModalFalha');
@@ -130,10 +159,11 @@ async function registrarVoto() {
     }
 }
 
-// Trecho que realiza o registro do voto EM BRANCO
-btnBranco.addEventListener('click', registrarVoto)
+// TRECHO QUE REALIZA O REGISTRO DE VOTO EM BRANCO (BOTÃO BRANCO)
 
-async function registrarVoto() {
+btnBranco.addEventListener('click', registrarVotoBranco)
+
+async function registrarVotoBranco() {
 
     let dataHora = getDate();
     let dadosVoto = {
@@ -161,8 +191,6 @@ async function registrarVoto() {
 
     }
 }
-
-
 
 
 // Função para carregar a configuração inicial da urna
